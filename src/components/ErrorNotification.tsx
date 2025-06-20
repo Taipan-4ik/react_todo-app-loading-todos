@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+
 type NotificationProps = {
   isError: boolean;
   errors: string[];
@@ -12,7 +14,13 @@ export const ErrorNotification: React.FC<NotificationProps> = ({
   return (
     <div
       data-cy="ErrorNotification"
-      className={`notification is-danger is-light has-text-weight-normal ${isError ? '' : 'hidden'}`}
+      className={classNames(
+        'notification',
+        'is-danger',
+        'is-light',
+        'has-text-weight-normal',
+        { hidden: !isError },
+      )}
     >
       <button
         data-cy="HideErrorButton"

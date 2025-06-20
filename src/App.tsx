@@ -13,22 +13,19 @@ export const App: React.FC = () => {
   // #region searchField states
   const [todos, setTodos] = useState<Todo[]>([]);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [todosLoadingError, setTodosLoadingError] = useState(false);
-  const [titleError, setTitleError] = useState(false);
-  const [addError, setAddError] = useState(false);
-  const [deleteError, setDeleteError] = useState(false);
-  const [updateError, setUpdateError] = useState(false);
+  const [titleError] = useState(false);
+  const [addError] = useState(false);
+  const [deleteError] = useState(false);
+  const [updateError] = useState(false);
   // #endregion
 
   // #region useEffect
   useEffect(() => {
-    console.log('first render');
     if (!USER_ID) {
       return;
     }
-    // setIsLoading(true);
 
     const getTodosList = async () => {
       try {
@@ -40,8 +37,6 @@ export const App: React.FC = () => {
         setIsError(true);
         setTodosLoadingError(true);
         throw new Error();
-      } finally {
-        // setIsLoading(false);
       }
     };
 
@@ -114,7 +109,7 @@ export const App: React.FC = () => {
       <h1 className="todoapp__title">todos</h1>
 
       <div className="todoapp__content">
-        <SearchField /*todos={todos} */ />
+        <SearchField />
         <TodoList
           todos={todos}
           visibleTodos={visibleTodos}

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import classNames from 'classnames';
 import { Todo } from '../types/Todo';
 
 type TodoListProps = {
@@ -19,7 +21,11 @@ export const TodoList: React.FC<TodoListProps> = ({
       {visibleTodos.map(todo => (
         <div
           data-cy="Todo"
-          className={`todo ${todo.completed ? 'completed' : ''} ${todos.length ? '' : 'hidden'}`}
+          className={classNames(
+            'todo',
+            { completed: todo.completed },
+            { hidden: !todos.length },
+          )}
           key={todo.id}
         >
           <label className="todo__status-label">

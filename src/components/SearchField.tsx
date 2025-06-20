@@ -1,9 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-// import { Todo } from '../types/Todo';
-
-// type SearchFieldProps = {
-//   todos: Todo[];
-// };
 
 export const SearchField: React.FC = () => {
   // #region searchField states

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { filterTodos } from '../utils/filterTodos';
 import { Todo } from '../types/Todo';
+import classNames from 'classnames';
+import { TodoStatus } from '../types/TodoStatus';
 
 type TodoFooterProps = {
   todos: Todo[];
@@ -11,68 +13,40 @@ export const TodoFooter: React.FC<TodoFooterProps> = ({
   todos,
   setVisibleTodos,
 }) => {
-  const [linkIsActive, setLinkIsActive] = useState({
-    all: true,
-    active: false,
-    completed: false,
-  });
+  const [selectedStatus, setSelectedStatus] = useState<TodoStatus>(
+    TodoStatus.All,
+  );
+
+  const quantityOfTasks = todos.filter(todo => todo.completed === false).length;
+  const filterTypes = Object.values(TodoStatus);
 
   return (
     /* Hide the footer if there are no todos */
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
-        {`${todos.filter(todo => todo.completed === false).length} items left`}
+        {`${quantityOfTasks} items left`}
       </span>
 
       {/* Active link should have the 'selected' class */}
       <nav className="filter" data-cy="Filter">
-        <a
-          href="#/"
-          className={`filter__link ${linkIsActive.all ? 'selected' : ''}`}
-          data-cy="FilterLinkAll"
-          onClick={() => {
-            const filteredList = filterTodos(todos, 'All');
+        {filterTypes.map((filterType, index) => (
+          <a
+            href="#/"
+            key={index}
+            className={classNames('filter__link', {
+              selected: selectedStatus === filterType,
+            })}
+            data-cy="FilterLinkAll"
+            onClick={() => {
+              const filteredList = filterTodos(todos, filterType);
 
-            setVisibleTodos(filteredList);
-          }}
-          onFocus={() => {
-            setLinkIsActive({ all: true, active: false, completed: false });
-          }}
-        >
-          All
-        </a>
-
-        <a
-          href="#/active"
-          className={`filter__link ${linkIsActive.active ? 'selected' : ''}`}
-          data-cy="FilterLinkActive"
-          onClick={() => {
-            const filteredList = filterTodos(todos, 'Active');
-
-            setVisibleTodos(filteredList);
-          }}
-          onFocus={() => {
-            setLinkIsActive({ all: false, active: true, completed: false });
-          }}
-        >
-          Active
-        </a>
-
-        <a
-          href="#/completed"
-          className={`filter__link ${linkIsActive.completed ? 'selected' : ''}`}
-          data-cy="FilterLinkCompleted"
-          onClick={() => {
-            const filteredList = filterTodos(todos, 'Completed');
-
-            setVisibleTodos(filteredList);
-          }}
-          onFocus={() => {
-            setLinkIsActive({ all: false, active: false, completed: true });
-          }}
-        >
-          Completed
-        </a>
+              setVisibleTodos(filteredList);
+              setSelectedStatus(filterType);
+            }}
+          >
+            {filterType}
+          </a>
+        ))}
       </nav>
 
       {/* this button should be disabled if there are no completed todos */}
