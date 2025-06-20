@@ -36,7 +36,7 @@ export const TodoFooter: React.FC<TodoFooterProps> = ({
             className={classNames('filter__link', {
               selected: selectedStatus === filterType,
             })}
-            data-cy="FilterLinkAll"
+            data-cy={`FilterLink${filterType}`}
             onClick={() => {
               const filteredList = filterTodos(todos, filterType);
 
